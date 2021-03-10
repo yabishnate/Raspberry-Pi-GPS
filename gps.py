@@ -1,4 +1,4 @@
-#Impoet serial port, import string module, import pynmea2 library
+#Import serial port, import string module, import pynmea2 library
 import serial
 import string
 import pynmea2
