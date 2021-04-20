@@ -1,19 +1,20 @@
-#Import serial port, import string module, import pynmea2 library
-import serial
-import string
-import pynmea2
+import requests
+import smtplib
 
+#API key
+api_file = open("api-key.txt", "r")
+api_key = api_file.read()
+api_file.close()
 
-while True:
-        port="\dev\ttyAMA0"
-        ser=serial.Serialport, 9600, timeout=0.5)
-        dataout = pynmea2.NMEAStreamReader()
-        newdata=ser.readline()
-        
-        
-        if newdata[0:6] == "$GPRMC":
-                newmsg=pynmea2.parse(newdata)
-                lat=newmsg.latitude
-                lng=newmsg.longitude
-                gps = "The Latitude is" + str(lat) + "and Longitude is" + str(lng)
-                print(gps)
+address = input("Please enter your current address\n")
+
+destination = input("Please enter the destination\n")
+
+url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&"
+
+r = requests.get(url + "origins=" + address + "&destinations=" + destinations + "&key=" + api_key)
+
+time = r.json()["rows"[0]["elements"][0]["duration"]["text"]
+seconds = r.json()["rows"[0]["elements"][0]["duration"]["value"]
+                   
+print("\n The total travel time from your address to the destination is", time)
